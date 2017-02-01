@@ -171,10 +171,20 @@ L = (1 2 NIL)
 
 #| Question 6.
 
+The function subsetsum takes a sum S and a list L as arguments, and returns a subset of L that sums up to S.
 
+First the given list L is copied into sorted_L and sorted from lowest to highest. The function sorted_subsetsum 
+is called using S and sorted_L as arguments, and returns the subset of sorted_L that sums up to S if it exists. 
+This subset, subset_sol, is intersected with the original list L to return the subset in its original unsorted order.
+
+How sorted_subsetsum and intersect work will be described in detail below.
 
 Examples:
-
+(subsetsum 5 '(1 2 3))					=>(2 3)
+(subsetsum 2 '(1 5 3))					=>nil
+(subsetsum 29 '(1 16 2 8 4))			=>(1 16 8 4)
+(subsetsum 10 '(1 1 5 6 8))				=>(1 1 8)
+(subsetsum 5 '(1 10 100 1000 10000))	=>nil
 
 |#
 (defun subsetsum (S L)
@@ -187,6 +197,23 @@ Examples:
 	)
 )
 
+#|
+
+The function sorted_subsetsum takes a sum S and a sorted list L from lowest to highest, and returns a subset of L
+that sums up to S.
+
+It works using the following recursion formula:
+
+	Base Cases: L is empty. Return NIL.
+				The lowest value (i.e the first in L) is larger than S, then a subset is not possible. Return NIL.
+				The lowest value is equal to S. No need to check the rest of the list, this value IS a subset sum. Return (list (car L)).
+
+	Rest Cases: Check if the first element is part of the subset...
+				If the rest of L and S-first returns a subset, then the first element must be part of the solution, add it to the returned subset.
+				Else if the rest of L and S returns a subset, then return that without the first element in L.
+				Otherwise there is NO solution possible, return NIL.
+
+|#
 (defun sorted_subsetsum (S L)
 	(cond 
 		((null L) nil)
@@ -209,6 +236,14 @@ Examples:
 	)
 )
 
+#|
+The function intersect takes two lists L1,L2 and returns the intersection between the two.
+
+If L1 or L2 is empty, then there is no intersection. 
+If the first element of L1 is a member of L2 then add it to the intersect of the rest of L1, and L2.
+Otherwise just intersect the rest of L1, and L2.
+
+|#
 (defun intersect (L1 L2)
 	(cond
 		((or (null L1) (null L2)) nil)
