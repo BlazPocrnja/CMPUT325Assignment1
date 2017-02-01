@@ -240,15 +240,39 @@ It works using the following recursion formula:
 The function intersect takes two lists L1,L2 and returns the intersection between the two.
 
 If L1 or L2 is empty, then there is no intersection. 
-If the first element of L1 is a member of L2 then add it to the intersect of the rest of L1, and L2.
+If the first element of L1 is a member of L2 then add it to the intersect of the rest of L1, and L2 with the first instance of that element removed.
 Otherwise just intersect the rest of L1, and L2.
 
 |#
 (defun intersect (L1 L2)
 	(cond
 		((or (null L1) (null L2)) nil)
-		((xmember L2 (car L1)) (cons (car L1) (intersect (cdr L1) L2)))
+		((xmember L2 (car L1)) (cons (car L1) (intersect (cdr L1) (remove_element (car L1) L2))))
 		(t (intersect (cdr L1) L2))
+	)
+)
+
+#|
+The function remove_element takes an argument X, and a list L, and removes the first instance of X in L, and returns the resulting list.
+
+If L is empty, then it returns NIL.
+If the first element of L is equal to X then it returns the rest of L.
+Otherwise it constructs a list with the first element and whatever is left from remove_element called on the rest of L.
+
+Note: This was written to allow intersect to have the same element multiple times.
+Example: 
+Without this...
+(intersect '(5 5 5 1) '(1 5)) =>(5 5 5 1)
+
+But now...
+(intersect '(5 5 5 1) '(1 5)) =>(5 1)
+
+|#
+(defun remove_element(X L)
+	(cond 
+		((null L) nil)
+		((= (car L) X) (cdr L))
+		(t (cons (car L) (remove_element X (cdr L))))
 	)
 )
 
