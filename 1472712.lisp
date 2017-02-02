@@ -222,15 +222,21 @@ It works using the following recursion formula:
 		(t	(let 
 				(
 					(with_first (sorted_subsetsum (- S (car L)) (cdr L)))
-					(without_first (sorted_subsetsum S (cdr L)))
 				)
 
-				(cond
-					((not (null with_first)) (cons (car L) with_first))
-					((not (null without_first)) without_first)
-					(t nil)
-				)
+				(if (not (null with_first)) (cons (car L) with_first)
+					(let 
+						(
+							(without_first (sorted_subsetsum S (cdr L)))
+						)
 
+						(if (not (null without_first)) without_first
+							nil
+						)
+
+					)
+
+				)
 			)
 		)
 	)
