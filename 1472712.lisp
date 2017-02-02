@@ -219,6 +219,7 @@ It works using the following recursion formula:
 		((null L) nil)
 		((> (car L) S) nil)
 		((= (car L) S) (list (car L)))
+		((< (- S (car L)) (car L)) (sorted_subsetsum S (cdr L)))
 		(t	(let 
 				(
 					(with_first (sorted_subsetsum (- S (car L)) (cdr L)))
