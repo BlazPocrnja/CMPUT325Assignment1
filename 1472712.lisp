@@ -204,14 +204,18 @@ that sums up to S.
 
 It works using the following recursion formula:
 
-	Base Cases: L is empty. Return NIL.
-				The lowest value (i.e the first in L) is larger than S, then a subset is not possible. Return NIL.
-				The lowest value is equal to S. No need to check the rest of the list, this value IS a subset sum. Return (list (car L)).
+	L = (x1 x2 ... xn), where x1 <= x2 <= ... <= xn
 
-	Rest Cases: Check if the first element is part of the subset...
-				If the rest of L and S-first returns a subset, then the first element must be part of the solution, add it to the returned subset.
-				Else if the rest of L and S returns a subset, then return that without the first element in L.
-				Otherwise there is NO solution possible, return NIL.
+	Base Cases: L is empty. Return NIL.
+				x1 > S, then a subset is not possible. Return NIL.
+				x1 = S. No need to check the rest of the list, x1 IS a subset sum. Return (x1).
+				x1 > S-x1, then there cannot be another element to satisfy the sum, since xi <= xi+1 , 1<=i<=n. 
+				Therefore just recurse with (x2...xn) and S.
+
+	Rest Cases: Check if x1 is part of the subset...
+				If (x2...xn) and S-x1 returns a non NIL answer, then x1 must be part of the solution, add it to the returned subset.
+				Else if that returns NIL, and (x2...xn) and S return a non NIL answer, then return that answer.
+				Otherwise there is no solution possible, return NIL.
 
 |#
 (defun sorted_subsetsum (S L)
